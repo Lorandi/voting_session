@@ -10,8 +10,8 @@ import javax.persistence.*;
 @With
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "voter")
-public class Voter {
+@Table(name = "elector")
+public class Elector {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

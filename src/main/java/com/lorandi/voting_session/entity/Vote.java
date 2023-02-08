@@ -18,5 +18,5 @@ public class Vote {
     private Long id;
     private Long surveyId;
     private Long voterId;
-    private Long approval;
+    private Boolean approval;
 }
