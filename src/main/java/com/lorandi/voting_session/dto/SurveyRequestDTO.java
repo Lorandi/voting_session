@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Builder
 public class SurveyRequestDTO {
 
-    @NotNull
     Long minutes;
     @NotNull
     String question;

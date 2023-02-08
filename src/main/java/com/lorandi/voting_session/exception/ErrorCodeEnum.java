@@ -8,7 +8,10 @@ import lombok.Getter;
 public enum ErrorCodeEnum {
 
     ERROR_GENERIC_EXCEPTION("error.generic.exception"),
-    ERROR_DATE_FORMAT("error.date.format");
+    ERROR_DATE_FORMAT("error.date.format"),
+    ERROR_SURVEY_NOT_FOUND("error.survey.not.found"),
+    ERROR_ELECTOR_NOT_FOUND("error.elector.not.found"),
+    ERROR_VOTE_NOT_FOUND("error.vote.not.found");
 
 
 

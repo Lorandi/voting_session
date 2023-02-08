@@ -16,8 +16,7 @@ public class SurveyUpdateDTO {
 
     @NotNull
     Long id;
-    @NotNull
-    LocalDateTime endTime;
+    Long minutes;
     @NotNull
     String question;
 }

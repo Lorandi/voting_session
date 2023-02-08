@@ -6,5 +6,5 @@ import com.lorandi.voting_session.entity.Survey;
 
 public interface SurveyMapper {
     Survey buildSurvey(SurveyRequestDTO requestDTO);
-    SurveyDTO buildSurveyDTO(Survey  survey);
+    SurveyDTO buildSurveyDTO(Survey survey);
 }
