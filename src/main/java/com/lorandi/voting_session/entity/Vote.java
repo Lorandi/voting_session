@@ -3,6 +3,7 @@ package com.lorandi.voting_session.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -10,11 +11,12 @@ import javax.persistence.*;
 @With
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "voter")
-public class Voter {
+@Table(name = "vote")
+public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String CPF;
-
+    private Long surveyId;
+    private Long voterId;
+    private Long approval;
 }

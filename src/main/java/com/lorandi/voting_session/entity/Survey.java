@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 public class Survey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private LocalDateTime starTime;
+    private Long id;
     private LocalDateTime endTime;
     private String question;
 }
