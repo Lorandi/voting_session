@@ -17,7 +17,7 @@ public class VoteUpdateDTO {
     @NotNull
     Long surveyId;
     @NotNull
-    Long voterId;
+    Long electorId;
     @NotNull
     Boolean approval;
 }

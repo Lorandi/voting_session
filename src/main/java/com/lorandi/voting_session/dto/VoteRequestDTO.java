@@ -15,7 +15,7 @@ public class VoteRequestDTO {
     @NotNull
     Long surveyId;
     @NotNull
-    Long electorIdId;
+    Long electorId;
     @NotNull
     Boolean approval;
 }
