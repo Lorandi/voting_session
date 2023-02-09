@@ -5,6 +5,7 @@ import com.lorandi.voting_session.dto.VoteDTO;
 import com.lorandi.voting_session.dto.VoteRequestDTO;
 import com.lorandi.voting_session.dto.VoteUpdateDTO;
 import com.lorandi.voting_session.entity.Vote;
+import com.lorandi.voting_session.enums.ElectorStatusEnum;
 import com.lorandi.voting_session.helper.MessageHelper;
 import com.lorandi.voting_session.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +74,12 @@ public class VoteService {
 
         var survey = surveyService.findById(surveyId);
         var elector = electorService.findById(electorId);
+
+        if(elector.getStatus().equals(ElectorStatusEnum.UNABLE_TO_VOTE)){
+            log.error(messageHelper.get(ERROR_ELECTOR_UNABLE_TO_VOTE, electorId));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_ELECTOR_UNABLE_TO_VOTE,
+                    electorId));
+        }
 
         if(!repository.findAllBySurveyIdAndElectorId(surveyId, electorId).isEmpty()){
             log.error(messageHelper.get(ERROR_ELECTOR_ALREADY_VOTED_FOR_THIS_SURVEY, electorId, surveyId));

@@ -4,6 +4,7 @@ import com.lorandi.voting_session.dto.ElectorDTO;
 import com.lorandi.voting_session.dto.ElectorRequestDTO;
 import com.lorandi.voting_session.dto.ElectorUpdateDTO;
 import com.lorandi.voting_session.entity.Elector;
+import com.lorandi.voting_session.enums.ElectorStatusEnum;
 import com.lorandi.voting_session.helper.MessageHelper;
 import com.lorandi.voting_session.repository.ElectorRepository;
 import com.lorandi.voting_session.repository.spec.ElectorSpecification;
@@ -40,12 +41,17 @@ public class ElectorService {
 
         var cpf = requestDTO.getCpf().replaceAll("[^0-9]", "");
 
-        if(!repository.findAllByCpf(cpf).isEmpty()){
+        if (!repository.findAllByCpf(cpf).isEmpty()) {
             log.error(messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
             throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
         }
 
-        return electorMapper.buildElectorDTO(repository.save(electorMapper.buildElector(requestDTO.withCpf(cpf))));
+        var status = isNull(requestDTO.getStatus()) ? ElectorStatusEnum.ABLE_TO_VOTE
+                : requestDTO.getStatus();
+
+        return electorMapper.buildElectorDTO(repository.save(electorMapper.buildElector(requestDTO
+                .withCpf(cpf)
+                .withStatus(status))));
     }
 
     public ElectorDTO update(final ElectorUpdateDTO updateDTO) {
@@ -57,14 +63,19 @@ public class ElectorService {
 
         var cpf = updateDTO.getCpf().replaceAll("[^0-9]", "");
 
-        if(!repository.findAllByCpf(cpf).isEmpty()){
-            log.error(messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
-            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
-        }
-
         var elector = findById(updateDTO.getId());
 
-        return electorMapper.buildElectorDTO(repository.save(elector.withCpf(cpf)));
+        if(!elector.getCpf().equals(updateDTO.getCpf())){
+            if (!repository.findAllByCpf(cpf).isEmpty()) {
+                log.error(messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
+                throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
+            }
+        }
+
+        var electorStatus = isNull(updateDTO.getStatus()) ? ElectorStatusEnum.ABLE_TO_VOTE
+                : updateDTO.getStatus();
+
+        return electorMapper.buildElectorDTO(repository.save(elector.withCpf(cpf).withStatus(electorStatus)));
     }
 
     public Elector findById(final Long id) {

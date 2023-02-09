@@ -69,7 +69,8 @@ public class SurveyService {
         repository.delete(survey);
     }
 
-    public Page<SurveyDTO> findAll(final Pageable pageable) {return repository.findAll(pageable).map(surveyMapper::buildSurveyDTO);
+    public Page<SurveyDTO> findAll(final Pageable pageable) {
+        return repository.findAll(pageable).map(surveyMapper::buildSurveyDTO);
     }
 
 }

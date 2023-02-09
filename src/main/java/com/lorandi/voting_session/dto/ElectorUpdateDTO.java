@@ -1,5 +1,6 @@
 package com.lorandi.voting_session.dto;
 
+import com.lorandi.voting_session.enums.ElectorStatusEnum;
 import lombok.Builder;
 import lombok.Value;
 import lombok.With;
@@ -16,4 +17,5 @@ public class ElectorUpdateDTO {
     Long id;
     @NotNull
     String cpf;
+    ElectorStatusEnum status;
 }
