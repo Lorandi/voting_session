@@ -57,14 +57,11 @@ public class SurveyResource {
     @Operation(summary = "Find all surveys",
             responses = {@ApiResponse(responseCode = "200",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = SurveyDTO.class))))})
-    public Page<SurveyDTO> findAll(@RequestParam(required = false) Optional<String> survey,
-                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                           Optional<List<LocalDateTime>> endTime,
-                                   @RequestParam(defaultValue = "0") Integer page,
+    public Page<SurveyDTO> findAll(@RequestParam(defaultValue = "0") Integer page,
                                    @RequestParam(defaultValue = "10") Integer size,
                                    @RequestParam(defaultValue = "id") String sort,
                                    @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
-        return service.findAll(survey, endTime, PageRequest.of(page, size, Sort.by(direction, sort)));
+        return service.findAll(PageRequest.of(page, size, Sort.by(direction, sort)));
     }
 
     @DeleteMapping("/{id}")

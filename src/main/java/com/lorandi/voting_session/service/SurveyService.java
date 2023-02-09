@@ -6,7 +6,6 @@ import com.lorandi.voting_session.dto.SurveyUpdateDTO;
 import com.lorandi.voting_session.entity.Survey;
 import com.lorandi.voting_session.helper.MessageHelper;
 import com.lorandi.voting_session.repository.SurveyRepository;
-import com.lorandi.voting_session.repository.spec.SurveySpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -70,14 +69,7 @@ public class SurveyService {
         repository.delete(survey);
     }
 
-    public Page<SurveyDTO> findAll(final Optional<String> survey,
-                                   final Optional<List<LocalDateTime>> endTime,
-                                   final Pageable pageable) {
-        return repository.findAll(SurveySpecification.builder()
-                        .survey(survey)
-                        .endTime(endTime)
-                        .build(), pageable)
-                .map(surveyMapper::buildSurveyDTO);
+    public Page<SurveyDTO> findAll(final Pageable pageable) {return repository.findAll(pageable).map(surveyMapper::buildSurveyDTO);
     }
 
 }

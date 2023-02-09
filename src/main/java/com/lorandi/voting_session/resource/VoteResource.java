@@ -1,5 +1,6 @@
 package com.lorandi.voting_session.resource;
 
+import com.lorandi.voting_session.dto.ResultDTO;
 import com.lorandi.voting_session.dto.VoteDTO;
 import com.lorandi.voting_session.dto.VoteRequestDTO;
 import com.lorandi.voting_session.dto.VoteUpdateDTO;
@@ -65,5 +66,13 @@ public class VoteResource {
             responses = {@ApiResponse(responseCode = "204", description = "Vote successfully deleted")})
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @GetMapping("/result/{surveyId}")
+    @Operation(summary = "Result by surveyId",
+            responses = {@ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
+                    content = @Content(schema = @Schema(implementation = ResultDTO.class)))})
+    public ResultDTO result(@PathVariable Long surveyId) {
+        return service.result(surveyId);
     }
 }

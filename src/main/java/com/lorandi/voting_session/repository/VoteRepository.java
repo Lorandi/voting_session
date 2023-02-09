@@ -10,5 +10,7 @@ import java.util.List;
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long>, JpaSpecificationExecutor<Vote> {
     List<Vote> findAllBySurveyIdAndElectorId(Long surveyId, Long electorId);
+    Long countBySurveyIdAndApproval(Long surveyId, Boolean approval);
+
 
 }

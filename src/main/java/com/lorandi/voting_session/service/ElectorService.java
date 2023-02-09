@@ -57,9 +57,14 @@ public class ElectorService {
 
         var cpf = updateDTO.getCpf().replaceAll("[^0-9]", "");
 
+        if(!repository.findAllByCpf(cpf).isEmpty()){
+            log.error(messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
+        }
+
         var elector = findById(updateDTO.getId());
 
-        return electorMapper.buildElectorDTO(repository.save(elector));
+        return electorMapper.buildElectorDTO(repository.save(elector.withCpf(cpf)));
     }
 
     public Elector findById(final Long id) {

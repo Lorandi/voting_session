@@ -1,5 +1,6 @@
 package com.lorandi.voting_session.service;
 
+import com.lorandi.voting_session.dto.ResultDTO;
 import com.lorandi.voting_session.dto.VoteDTO;
 import com.lorandi.voting_session.dto.VoteRequestDTO;
 import com.lorandi.voting_session.dto.VoteUpdateDTO;
@@ -86,4 +87,20 @@ public class VoteService {
         }
     }
 
+    public ResultDTO result(Long surveyId){
+        var survey = surveyService.findDTOById(surveyId);
+        var approves = repository.countBySurveyIdAndApproval(surveyId, true);
+        var reproves = repository.countBySurveyIdAndApproval(surveyId, false);
+
+        String result;
+
+        if (approves > reproves){
+            result = "Aprovado";
+        } else if ((approves < reproves)){
+            result = "Reprovado";
+        }else {
+            result =  "Empate";
+        }
+        return ResultDTO.builder().survey(survey).approves(approves).reproves(reproves).result(result).build();
+    }
 }
