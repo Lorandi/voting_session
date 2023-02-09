@@ -15,5 +15,5 @@ public class ElectorUpdateDTO {
     @NotNull
     Long id;
     @NotNull
-    String CPF;
+    String cpf;
 }

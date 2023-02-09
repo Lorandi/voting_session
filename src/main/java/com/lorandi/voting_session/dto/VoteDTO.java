@@ -13,5 +13,5 @@ public class VoteDTO {
     Long id;
     Long surveyId;
     Long electorId;
-    Long approval;
+    Boolean approval;
 }

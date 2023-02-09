@@ -15,6 +15,6 @@ public class Elector {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String CPF;
+    private String cpf;
 
 }

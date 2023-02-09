@@ -11,5 +11,5 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 public class ElectorDTO {
     Long id;
-    String CPF;
+    String cpf;
 }

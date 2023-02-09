@@ -30,9 +30,9 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .contact(new Contact("Rodrigo Lorandi", "", "rodrigo_lorandi@hotmail.com"))
-                .title("Gerenciamento de Pessoas")
-                .description("Documentação API de gerenciamento de pessoas")
-                .license("Apache Licence Version 2.0")
+                .title("Sessão de votação")
+                .description("Documentação API de gerenciamento de sessão de votação")
+                .license("Apache Licence")
                 .licenseUrl("https://apache.org")
                 .version("1.0")
                 .build();

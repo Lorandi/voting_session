@@ -8,6 +8,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,9 +19,11 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.ValidationException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.lorandi.voting_session.exception.ErrorCodeEnum.ERROR_DATE_FORMAT;
 import static com.lorandi.voting_session.exception.ErrorCodeEnum.ERROR_GENERIC_EXCEPTION;
+import static java.text.MessageFormat.format;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Slf4j
@@ -64,6 +68,27 @@ public class ResourceExceptionHandler {
                         .status(status.value())
                         .error("Server Error")
                         .message(List.of(message))
+                        .path(request.getRequestURI())
+                        .trace(ExceptionUtils.getStackTrace(e))
+                        .build());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<StandardError> handleMethodArgumentNotValidExceptions(MethodArgumentNotValidException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        log.error(e.getMessage());
+        return ResponseEntity
+                .status(status)
+                .body(StandardError
+                        .builder()
+                        .status(status.value())
+                        .error("Method argument not valid")
+                        .message(e.getBindingResult()
+                                .getAllErrors()
+                                .stream()
+                                .map(objectError -> format("{0}: {1}", ((FieldError) objectError).getField(), (objectError).getDefaultMessage()))
+                                .sorted()
+                                .collect(Collectors.toList()))
                         .path(request.getRequestURI())
                         .trace(ExceptionUtils.getStackTrace(e))
                         .build());

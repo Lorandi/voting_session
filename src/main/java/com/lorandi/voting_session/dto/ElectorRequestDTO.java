@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Jacksonized
 @Builder
 public class ElectorRequestDTO {
+
     @NotNull
-    String CPF;
+    String cpf;
 }
