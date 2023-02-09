@@ -5,10 +5,13 @@ import com.lorandi.voting_session.dto.ElectorRequestDTO;
 import com.lorandi.voting_session.dto.ElectorUpdateDTO;
 import com.lorandi.voting_session.service.ElectorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +41,7 @@ public class ElectorResource {
     @PostMapping
     @ResponseStatus(CREATED)
     @Operation(summary = "Create elector",
-            responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = ElectorRequestDTO.class)))})
+            responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = ElectorDTO.class)))})
     public ElectorDTO create( @Valid @RequestBody ElectorRequestDTO requestDTO) {
         return service.create(requestDTO);
     }
@@ -46,8 +49,8 @@ public class ElectorResource {
     @PutMapping
     @Operation(summary = "Update elector by id",
             responses = {@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ElectorDTO.class)))})
-    public ElectorDTO update( @Valid @RequestBody ElectorUpdateDTO electorRequest) {
-        return service.update(electorRequest);
+    public ElectorDTO update( @Valid @RequestBody ElectorUpdateDTO updateDTO) {
+        return service.update(updateDTO);
     }
 
     @GetMapping
@@ -60,5 +63,12 @@ public class ElectorResource {
                                    @RequestParam(defaultValue = "id") String sort,
                                    @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
         return service.findAll(cpf, PageRequest.of(page, size, Sort.by(direction, sort)));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete elector by id",
+            responses = {@ApiResponse(responseCode = "204", description = "Elector successfully deleted")})
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

@@ -37,7 +37,7 @@ public class VoteResource {
     @PostMapping
     @ResponseStatus(CREATED)
     @Operation(summary = "Create vote",
-            responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = VoteRequestDTO.class)))})
+            responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = VoteDTO.class)))})
     public VoteDTO create( @Valid @RequestBody VoteRequestDTO requestDTO) {
         return service.create(requestDTO);
     }
@@ -58,5 +58,12 @@ public class VoteResource {
                                    @RequestParam(defaultValue = "id") String sort,
                                    @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
         return service.findAll(PageRequest.of(page, size, Sort.by(direction, sort)));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete vote by id",
+            responses = {@ApiResponse(responseCode = "204", description = "Vote successfully deleted")})
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

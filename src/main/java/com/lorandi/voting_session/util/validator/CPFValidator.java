@@ -2,6 +2,12 @@ package com.lorandi.voting_session.util.validator;
 
 public class CPFValidator {
     public static boolean isValidCPF(String cpf) {
+
+        String pattern = "^[0-9\\-\\.]+$";
+        if(!cpf.matches(pattern)){
+            return false;
+        }
+
         // Remove any formatting from the CPF string
         cpf = cpf.replaceAll("[^0-9]", "");
 

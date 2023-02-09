@@ -13,7 +13,9 @@ public enum ErrorCodeEnum {
     ERROR_ELECTOR_NOT_FOUND("error.elector.not.found"),
     ERROR_VOTE_NOT_FOUND("error.vote.not.found"),
     ERROR_INVALID_CPF("error.invalid.cpf"),
-    ERROR_ELECTOR_ALREADY_VOTED_FOR_THIS_SURVEY("error.elector.already.voted.for.this.survey");
+    ERROR_ELECTOR_ALREADY_VOTED_FOR_THIS_SURVEY("error.elector.already.voted.for.this.survey"),
+    ERROR_CPF_ALREADY_USED("error.cpf.already.used"),
+    ERROR_THIS_SURVEY_IS_EXPIRED("error.this.survey.is.expired");
 
 
 

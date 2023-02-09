@@ -13,8 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static com.lorandi.voting_session.exception.ErrorCodeEnum.ERROR_ELECTOR_ALREADY_VOTED_FOR_THIS_SURVEY;
-import static com.lorandi.voting_session.exception.ErrorCodeEnum.ERROR_VOTE_NOT_FOUND;
+import java.time.LocalDateTime;
+
+import static com.lorandi.voting_session.exception.ErrorCodeEnum.*;
 import static com.lorandi.voting_session.util.mapper.MapperConstants.voteMapper;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -33,6 +34,7 @@ public class VoteService {
 
     public VoteDTO create(final VoteRequestDTO requestDTO) {
         validateVote(requestDTO.getSurveyId(), requestDTO.getElectorId());
+
         return voteMapper.buildVoteDTO(repository.save(voteMapper.buildVote(requestDTO)));
     }
 
@@ -68,14 +70,20 @@ public class VoteService {
 
     private void validateVote(Long surveyId, Long electorId){
 
-        surveyService.findById(surveyId);
-        electorService.findById(electorId);
+        var survey = surveyService.findById(surveyId);
+        var elector = electorService.findById(electorId);
 
         if(!repository.findAllBySurveyIdAndElectorId(surveyId, electorId).isEmpty()){
             log.error(messageHelper.get(ERROR_ELECTOR_ALREADY_VOTED_FOR_THIS_SURVEY, electorId, surveyId));
             throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_ELECTOR_ALREADY_VOTED_FOR_THIS_SURVEY,
-                    surveyId, electorId));
+                     electorId, surveyId));
         }
 
+        if(survey.getEndTime().isBefore(LocalDateTime.now())){
+            log.error(messageHelper.get(ERROR_THIS_SURVEY_IS_EXPIRED, survey.getId().toString()));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_THIS_SURVEY_IS_EXPIRED,
+                    survey.getId().toString()));
+        }
     }
+
 }

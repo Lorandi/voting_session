@@ -41,7 +41,7 @@ public class SurveyResource {
     @PostMapping
     @ResponseStatus(CREATED)
     @Operation(summary = "Create survey",
-            responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = SurveyRequestDTO.class)))})
+            responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = SurveyDTO.class)))})
     public SurveyDTO create( @Valid @RequestBody SurveyRequestDTO requestDTO) {
         return service.create(requestDTO);
     }
@@ -65,5 +65,12 @@ public class SurveyResource {
                                    @RequestParam(defaultValue = "id") String sort,
                                    @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
         return service.findAll(survey, endTime, PageRequest.of(page, size, Sort.by(direction, sort)));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete survey by id",
+            responses = {@ApiResponse(responseCode = "204", description = "Survey successfully deleted")})
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

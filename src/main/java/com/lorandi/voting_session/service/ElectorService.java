@@ -17,8 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static com.lorandi.voting_session.exception.ErrorCodeEnum.ERROR_ELECTOR_NOT_FOUND;
-import static com.lorandi.voting_session.exception.ErrorCodeEnum.ERROR_INVALID_CPF;
+import static com.lorandi.voting_session.exception.ErrorCodeEnum.*;
 import static com.lorandi.voting_session.util.mapper.MapperConstants.electorMapper;
 import static java.util.Objects.isNull;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -39,7 +38,14 @@ public class ElectorService {
             throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_INVALID_CPF, requestDTO.getCpf()));
         }
 
-        return electorMapper.buildElectorDTO(repository.save(electorMapper.buildElector(requestDTO)));
+        var cpf = requestDTO.getCpf().replaceAll("[^0-9]", "");
+
+        if(!repository.findAllByCpf(cpf).isEmpty()){
+            log.error(messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
+        }
+
+        return electorMapper.buildElectorDTO(repository.save(electorMapper.buildElector(requestDTO.withCpf(cpf))));
     }
 
     public ElectorDTO update(final ElectorUpdateDTO updateDTO) {
@@ -48,6 +54,8 @@ public class ElectorService {
             log.error(messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
             throw new ResponseStatusException(NOT_FOUND, messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
         }
+
+        var cpf = updateDTO.getCpf().replaceAll("[^0-9]", "");
 
         var elector = findById(updateDTO.getId());
 
