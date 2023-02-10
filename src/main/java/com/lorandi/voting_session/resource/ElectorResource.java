@@ -34,7 +34,7 @@ public class ElectorResource {
     @Operation(summary = "Search elector by id",
             responses = {@ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
                     content = @Content(schema = @Schema(implementation = ElectorDTO.class)))})
-    public ElectorDTO findById( @Valid @PathVariable Long id) {
+    public ElectorDTO findById(@Valid @PathVariable Long id) {
         return service.findDTOById(id);
     }
 
@@ -42,14 +42,14 @@ public class ElectorResource {
     @ResponseStatus(CREATED)
     @Operation(summary = "Create elector",
             responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = ElectorDTO.class)))})
-    public ElectorDTO create( @Valid @RequestBody ElectorRequestDTO requestDTO) {
+    public ElectorDTO create(@Valid @RequestBody ElectorRequestDTO requestDTO) {
         return service.create(requestDTO);
     }
 
     @PutMapping
     @Operation(summary = "Update elector by id",
             responses = {@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ElectorDTO.class)))})
-    public ElectorDTO update( @Valid @RequestBody ElectorUpdateDTO updateDTO) {
+    public ElectorDTO update(@Valid @RequestBody ElectorUpdateDTO updateDTO) {
         return service.update(updateDTO);
     }
 
@@ -58,10 +58,10 @@ public class ElectorResource {
             responses = {@ApiResponse(responseCode = "200",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = ElectorDTO.class))))})
     public Page<ElectorDTO> findAll(@RequestParam(required = false) Optional<String> cpf,
-                                   @RequestParam(defaultValue = "0") Integer page,
-                                   @RequestParam(defaultValue = "10") Integer size,
-                                   @RequestParam(defaultValue = "id") String sort,
-                                   @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
+                                    @RequestParam(defaultValue = "0") Integer page,
+                                    @RequestParam(defaultValue = "10") Integer size,
+                                    @RequestParam(defaultValue = "id") String sort,
+                                    @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
         return service.findAll(cpf, PageRequest.of(page, size, Sort.by(direction, sort)));
     }
 

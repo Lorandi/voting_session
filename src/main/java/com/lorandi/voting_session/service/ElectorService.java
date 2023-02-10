@@ -58,14 +58,14 @@ public class ElectorService {
 
         if (!CPFValidator.isValidCPF(updateDTO.getCpf())) {
             log.error(messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
-            throw new ResponseStatusException(NOT_FOUND, messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
         }
 
         var cpf = updateDTO.getCpf().replaceAll("[^0-9]", "");
 
         var elector = findById(updateDTO.getId());
 
-        if(!elector.getCpf().equals(updateDTO.getCpf())){
+        if (!elector.getCpf().equals(updateDTO.getCpf())) {
             if (!repository.findAllByCpf(cpf).isEmpty()) {
                 log.error(messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
                 throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));

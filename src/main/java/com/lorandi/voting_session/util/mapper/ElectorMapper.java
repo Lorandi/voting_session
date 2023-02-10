@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface ElectorMapper {
     Elector buildElector(ElectorRequestDTO requestDTO);
+
     ElectorDTO buildElectorDTO(Elector elector);
 }

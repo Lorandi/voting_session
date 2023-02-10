@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface VoteMapper {
     Vote buildVote(VoteRequestDTO requestDTO);
+
     VoteDTO buildVoteDTO(Vote vote);
 }

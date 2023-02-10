@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface SurveyMapper {
     Survey buildSurvey(SurveyRequestDTO requestDTO);
+
     SurveyDTO buildSurveyDTO(Survey survey);
 }

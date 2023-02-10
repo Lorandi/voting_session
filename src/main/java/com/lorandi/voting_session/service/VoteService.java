@@ -30,8 +30,8 @@ public class VoteService {
     private final VoteRepository repository;
     private final MessageHelper messageHelper;
 
-    private final  ElectorService electorService;
-    private final  SurveyService surveyService;
+    private final ElectorService electorService;
+    private final SurveyService surveyService;
 
 
     public VoteDTO create(final VoteRequestDTO requestDTO) {
@@ -70,43 +70,43 @@ public class VoteService {
         return repository.findAll(pageable).map(voteMapper::buildVoteDTO);
     }
 
-    private void validateVote(Long surveyId, Long electorId){
+    private void validateVote(Long surveyId, Long electorId) {
 
         var survey = surveyService.findById(surveyId);
         var elector = electorService.findById(electorId);
 
-        if(elector.getStatus().equals(ElectorStatusEnum.UNABLE_TO_VOTE)){
+        if (elector.getStatus().equals(ElectorStatusEnum.UNABLE_TO_VOTE)) {
             log.error(messageHelper.get(ERROR_ELECTOR_UNABLE_TO_VOTE, electorId));
             throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_ELECTOR_UNABLE_TO_VOTE,
                     electorId));
         }
 
-        if(!repository.findAllBySurveyIdAndElectorId(surveyId, electorId).isEmpty()){
+        if (!repository.findAllBySurveyIdAndElectorId(surveyId, electorId).isEmpty()) {
             log.error(messageHelper.get(ERROR_ELECTOR_ALREADY_VOTED_FOR_THIS_SURVEY, electorId, surveyId));
             throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_ELECTOR_ALREADY_VOTED_FOR_THIS_SURVEY,
-                     electorId, surveyId));
+                    electorId, surveyId));
         }
 
-        if(survey.getEndTime().isBefore(LocalDateTime.now())){
+        if (survey.getEndTime().isBefore(LocalDateTime.now())) {
             log.error(messageHelper.get(ERROR_THIS_SURVEY_IS_EXPIRED, survey.getId().toString()));
             throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_THIS_SURVEY_IS_EXPIRED,
                     survey.getId().toString()));
         }
     }
 
-    public ResultDTO result(Long surveyId){
+    public ResultDTO result(Long surveyId) {
         var survey = surveyService.findDTOById(surveyId);
         var approves = repository.countBySurveyIdAndApproval(surveyId, true);
         var reproves = repository.countBySurveyIdAndApproval(surveyId, false);
 
         String result;
 
-        if (approves > reproves){
+        if (approves > reproves) {
             result = "Aprovado";
-        } else if ((approves < reproves)){
+        } else if ((approves < reproves)) {
             result = "Reprovado";
-        }else {
-            result =  "Empate";
+        } else {
+            result = "Empate";
         }
         return ResultDTO.builder().survey(survey).approves(approves).reproves(reproves).result(result).build();
     }

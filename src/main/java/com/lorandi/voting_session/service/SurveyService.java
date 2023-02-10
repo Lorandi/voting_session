@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 import static com.lorandi.voting_session.exception.ErrorCodeEnum.ERROR_SURVEY_NOT_FOUND;
 import static com.lorandi.voting_session.util.mapper.MapperConstants.surveyMapper;

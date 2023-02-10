@@ -10,7 +10,7 @@ import lombok.Getter;
 @JsonSerialize(using = EnumSerializer.class)
 @AllArgsConstructor
 @Getter
-public enum ElectorStatusEnum implements EnumDescription{
+public enum ElectorStatusEnum implements EnumDescription {
 
     ABLE_TO_VOTE("Pode votar"),
     UNABLE_TO_VOTE("Não pode votar");

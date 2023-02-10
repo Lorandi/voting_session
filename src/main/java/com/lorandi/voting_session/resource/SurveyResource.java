@@ -34,7 +34,7 @@ public class SurveyResource {
     @Operation(summary = "Search survey by id",
             responses = {@ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
                     content = @Content(schema = @Schema(implementation = SurveyDTO.class)))})
-    public SurveyDTO findById( @Valid @PathVariable Long id) {
+    public SurveyDTO findById(@Valid @PathVariable Long id) {
         return service.findDTOById(id);
     }
 
@@ -42,14 +42,14 @@ public class SurveyResource {
     @ResponseStatus(CREATED)
     @Operation(summary = "Create survey",
             responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = SurveyDTO.class)))})
-    public SurveyDTO create( @Valid @RequestBody SurveyRequestDTO requestDTO) {
+    public SurveyDTO create(@Valid @RequestBody SurveyRequestDTO requestDTO) {
         return service.create(requestDTO);
     }
 
     @PutMapping
     @Operation(summary = "Update survey by id",
             responses = {@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SurveyDTO.class)))})
-    public SurveyDTO update( @Valid @RequestBody SurveyUpdateDTO surveyRequest) {
+    public SurveyDTO update(@Valid @RequestBody SurveyUpdateDTO surveyRequest) {
         return service.update(surveyRequest);
     }
 

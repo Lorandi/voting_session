@@ -19,6 +19,5 @@ public enum ErrorCodeEnum {
     ERROR_ELECTOR_UNABLE_TO_VOTE("error.elector.unable.to.vote");
 
 
-
     private final String messageKey;
 }

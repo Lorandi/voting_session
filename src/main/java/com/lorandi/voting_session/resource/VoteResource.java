@@ -31,7 +31,7 @@ public class VoteResource {
     @Operation(summary = "Search vote by id",
             responses = {@ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
                     content = @Content(schema = @Schema(implementation = VoteDTO.class)))})
-    public VoteDTO findById( @Valid @PathVariable Long id) {
+    public VoteDTO findById(@Valid @PathVariable Long id) {
         return service.findDTOById(id);
     }
 
@@ -39,14 +39,14 @@ public class VoteResource {
     @ResponseStatus(CREATED)
     @Operation(summary = "Create vote",
             responses = {@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = VoteDTO.class)))})
-    public VoteDTO create( @Valid @RequestBody VoteRequestDTO requestDTO) {
+    public VoteDTO create(@Valid @RequestBody VoteRequestDTO requestDTO) {
         return service.create(requestDTO);
     }
 
     @PutMapping
     @Operation(summary = "Update vote by id",
             responses = {@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = VoteDTO.class)))})
-    public VoteDTO update( @Valid @RequestBody VoteUpdateDTO voteRequest) {
+    public VoteDTO update(@Valid @RequestBody VoteUpdateDTO voteRequest) {
         return service.update(voteRequest);
     }
 
@@ -54,10 +54,10 @@ public class VoteResource {
     @Operation(summary = "Find all votes",
             responses = {@ApiResponse(responseCode = "200",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = VoteDTO.class))))})
-    public Page<VoteDTO> findAll(  @RequestParam(defaultValue = "0") Integer page,
-                                   @RequestParam(defaultValue = "10") Integer size,
-                                   @RequestParam(defaultValue = "id") String sort,
-                                   @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
+    public Page<VoteDTO> findAll(@RequestParam(defaultValue = "0") Integer page,
+                                 @RequestParam(defaultValue = "10") Integer size,
+                                 @RequestParam(defaultValue = "id") String sort,
+                                 @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
         return service.findAll(PageRequest.of(page, size, Sort.by(direction, sort)));
     }
 

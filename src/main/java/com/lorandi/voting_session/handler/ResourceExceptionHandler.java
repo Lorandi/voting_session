@@ -58,7 +58,7 @@ public class ResourceExceptionHandler {
         HttpStatus status = BAD_REQUEST;
         var message = messageHelper.get(ERROR_GENERIC_EXCEPTION, e);
 
-        if(((InvalidFormatException)e.getCause()).getTargetType().getName().equals("java.time.LocalDate")) {
+        if (((InvalidFormatException) e.getCause()).getTargetType().getName().equals("java.time.LocalDate")) {
             message = messageHelper.get(ERROR_DATE_FORMAT, e);
         }
         log.error(request.getRequestURI(), e);
